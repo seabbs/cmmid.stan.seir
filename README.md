@@ -209,7 +209,7 @@ data <- list(
   t0 = 0,
   tswitch = 10,
   N = 1e5,
-  use_likelihood = 0
+  use_likelihood = 1 # lets us explore the priors
 )
 data$ts <- seq(1, data$n_days, by = 1)
 ```
