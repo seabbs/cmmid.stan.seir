@@ -44,8 +44,6 @@ See [here](https://mc-stan.org) for more.
   - MCMC often not a great choice for complex compartmental model
     systems. For these models tools that support PMCMC or SMC^2 are
     likely more optimal (Libbi/Birch, ODIN/Dust, etc).
-  - Not likely to be widely used by many supervisors and so may be
-    difficult to get code support.
   - Hard to use programmatically across models (you may find yourself
     writing a DSL generator).
   - Interaction with fit model objects is not currently ideal but this
