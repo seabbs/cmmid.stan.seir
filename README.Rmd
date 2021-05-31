@@ -7,7 +7,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
+  fig.path = "figures/README-",
   out.width = "100%"
 )
 ```
@@ -59,14 +59,57 @@ See [here](https://mc-stan.org) for more.
 
 Code below is heavily based on [Bayesian workflow for disease transmission modelling in stan](https://mc-stan.org/users/documentation/case-studies/boarding_school_case_study.html).
 
+
+### Set up
+
 * Load some packages
 
-```{r}
+```{r, message = FALSE}
 library(rstan)
+library(tidyverse)
 ```
 
 * Load the model
 
-```{r, eval = FALSE}
+```{r}
 model <- stan_model("model.stan")
+model
+```
+
+* Load the data
+
+```{r}
+# Cases
+dt <- readRDS("data/SIRsample.rds")
+head(dt)
+```
+
+* Look at the simulated data (it is a mess - thanks Carl)
+
+```{r}
+plot(dt$onsets)
+```
+* Define as parameters for the stan model
+
+```{r}
+data <- list(
+  cases = dt$onsets,
+  n_days = length(dt$onsets),
+  t0 = 0,
+  tswitch = 10,
+  N = 1e5
+)
+data$ts <- seq(1, data$n_days, by = 1)
+```
+
+### Fit the model
+
+
+* Fit the model using NUTS
+
+```{r, eval = FALSE}
+fit_nuts <- sampling(model,
+                     data = data,
+                     chains = 4,
+                     seed = 0)
 ```
