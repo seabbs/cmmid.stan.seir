@@ -34,6 +34,7 @@ data {
   real ts[n_days];
   int N; // population size
   int cases[n_days];
+  int use_likelihood;
 }
 transformed data {
   int x_i[1] = { N }; //formatting to feed the ODE function
@@ -49,8 +50,8 @@ parameters {
 }
 transformed parameters{
   real y[n_days, 4];
-  real incidence[n_days - 1];
-  real phi = 1. / phi_inv;
+  vector[n_days - 1] incidence;
+  real phi = 1. / sqrt(phi_inv);
   real theta[5];
   theta = {beta, gamma, a, i0, e0};
   y = integrate_ode_rk45(seir, rep_array(0.0, 4), t0, ts, theta, x_r, x_i);
@@ -63,20 +64,19 @@ model {
   beta ~ normal(2, 1);
   gamma ~ normal(0.4, 0.5);
   a ~ normal(0.4, 0.5);
-  phi_inv ~ exponential(1);
+  phi_inv ~ normal(0, 1) T[0, ];
   i0 ~ normal(0, 5);
   e0 ~ normal(0, 5);
   
   // observation model
-  cases[1:(n_days-1)] ~ neg_binomial_2(incidence, phi);
+  if (use_likelihood) {
+    cases[1:(n_days-1)] ~ neg_binomial_2(incidence, phi);
+  }
 }
 generated quantities {
   real R0 = beta / gamma;
-  real Reff[n_days]; // R0 but taking into account environmental changes
   real recovery_time = 1 / gamma;
   real incubation_time = 1 / a;
   real pred_cases[n_days-1];
-  pred_cases = neg_binomial_2_rng(incidence, phi);
-  for (i in 1:n_days)
-    Reff[i] = beta / gamma;
+  pred_cases = neg_binomial_2_rng(incidence + 1e-5, phi);
 }
