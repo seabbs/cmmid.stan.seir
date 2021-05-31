@@ -64,7 +64,7 @@ Code below is heavily based on [Bayesian workflow for disease transmission model
 
 * Load some packages
 
-```{r, message = FALSE}
+```{r, include = FALSE}
 library(rstan)
 library(tidyverse)
 ```

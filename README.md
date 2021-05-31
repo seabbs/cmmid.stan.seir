@@ -74,16 +74,6 @@ stan](https://mc-stan.org/users/documentation/case-studies/boarding_school_case_
 
   - Load some packages
 
-<!-- end list -->
-
-``` r
-library(rstan)
-#> Warning: package 'rstan' was built under R version 4.0.4
-library(tidyverse)
-#> Warning: package 'tibble' was built under R version 4.0.4
-#> Warning: package 'dplyr' was built under R version 4.0.4
-```
-
   - Load the model
 
 <!-- end list -->
@@ -201,7 +191,7 @@ head(dt)
 plot(dt$onsets)
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" /> \*
+<img src="figures/README-unnamed-chunk-5-1.png" width="100%" /> \*
 Define as parameters for the stan model
 
 ``` r
