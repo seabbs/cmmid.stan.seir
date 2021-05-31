@@ -13,14 +13,14 @@ and inference theme meeting.
 > high-performance statistical computation. Thousands of users rely on
 > Stan for statistical modeling, data analysis, and prediction in the
 > social, biological, and physical sciences, engineering, and business.
-
+> 
 > Users specify log density functions in Stan’s probabilistic
 > programming language and get:
-
+> 
 >   - full Bayesian statistical inference with MCMC sampling (NUTS, HMC)
 >   - approximate Bayesian inference with variational inference (ADVI)
 >   - penalized maximum likelihood estimation with optimization (L-BFGS)
-
+> 
 > Stan’s math library provides differentiable probability functions &
 > linear algebra (C++ autodiff). Additional R packages provide
 > expression-based linear modeling, posterior visualization, and
@@ -33,18 +33,18 @@ See [here](https://mc-stan.org) for more.
   - Community, documention, and ongoing development.
   - A good enough tool for a broad range of problems. Useful if wanting
     to do anything other than compartmental models.
-  - Clean DSL which can be extended with functions written in C++.
+  - Clean domain-specific langauge (DSL) which can be extended with
+    functions written in C++.
   - Largely automated and optimised MCMC reduces the cognitive load when
     modelling.
-  - Number of stan users in the CMMID who are likely willing to help
-    quid pro quo.
+  - Number of stan users in the CMMID who are likely willing to help.
 
 ## Why not
 
   - MCMC often not a great choice for complex compartmental model
     systems. For these models tools that support PMCMC or SMC^2 are
     likely more optimal (Libbi/Birch, ODIN/Dust, etc).
-  - Not likely to be widely used by many Supervisors and so may be
+  - Not likely to be widely used by many supervisors and so may be
     difficult to get code support.
   - Hard to use programmatically across models (you may find yourself
     writing a DSL generator).
@@ -66,22 +66,21 @@ See [here](https://mc-stan.org) for more.
 
 ## Example
 
-Code below is heavily based on [Bayesian workflow for disease
-transmission modelling in
-stan](https://mc-stan.org/users/documentation/case-studies/boarding_school_case_study.html).
-
 ### Set up
 
   - Load some packages
 
-  - Load the model
+  - Load the SEIR model (heavily based on [Bayesian workflow for disease
+    transmission modelling in
+    stan](https://mc-stan.org/users/documentation/case-studies/boarding_school_case_study.html)).
 
 <!-- end list -->
 
 ``` r
 model <- stan_model("model.stan")
-#> Warning in readLines(file, warn = TRUE): incomplete final line
-#> found on '/home/rstudio/stan.seir/model.stan'
+#> Warning in readLines(file, warn =
+#> TRUE): incomplete final line found on
+#> '/home/rstudio/stan.seir/model.stan'
 model
 #> S4 class stanmodel 'model' coded as follows:
 #> functions {
@@ -183,7 +182,7 @@ head(dt)
 #> 6      1          0     9
 ```
 
-  - Look at the simulated data (it is a mess - thanks Carl)
+  - Look at the simulated data - oh dear.
 
 <!-- end list -->
 
@@ -191,8 +190,11 @@ head(dt)
 plot(dt$onsets)
 ```
 
-<img src="figures/README-unnamed-chunk-5-1.png" width="100%" /> \*
-Define as parameters for the stan model
+<img src="figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+  - Define as parameters for the stan model
+
+<!-- end list -->
 
 ``` r
 data <- list(
@@ -207,7 +209,8 @@ data$ts <- seq(1, data$n_days, by = 1)
 
 ### Fit the model
 
-  - Fit the model using NUTS
+  - Fit the model using NUTS - this won’t actually fit probably due to
+    model misspecification but maybe also user error…
 
 <!-- end list -->
 
@@ -217,3 +220,22 @@ fit_nuts <- sampling(model,
                      chains = 4,
                      seed = 0)
 ```
+
+This model is likely not a very good fit for this data. There are low
+case numbers meaning that stochasticity is probably an issue and onsets
+are very stable initially and then peak well before susceptibility
+depletion looks like it would play a role. Some things we could explore
+to deal with this:
+
+  - different priors choices.
+  - time-varying beta and importations.
+  - importations, sub-critical R, and a stochastic model.
+  - assuming a high level of underreporting combined with importations.
+  - lots of other things to explore.
+
+At this point I decided to have a BBQ instead (see below and note the
+natty hat). See resources for more information about stan and
+compartmental models. If interested in more of my cutting insights I’m
+available for collaboration.
+
+![](figures/bbq.jpg)
