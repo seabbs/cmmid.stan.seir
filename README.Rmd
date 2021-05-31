@@ -12,11 +12,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# An example SEIR compartmental model implemented in stan
+# Stan in the CMMID
 
 > [There are many like it, but this one is mine](https://en.wikipedia.org/wiki/Rifleman%27s_Creed)
 
-An example SEIR model implemented in stan for the CMMID computational and inference theme meeting. 
+A short summary on the what, why, why not, and how of stan + an example SEIR model for the CMMID computational
+and inference theme meeting.
 
 ## What
 
@@ -62,6 +63,11 @@ See [here](https://mc-stan.org) for more.
 * Load some packages
 
 ```{r, include = FALSE}
+library(rstan)
+library(tidyverse)
+```
+
+```{r, eval = FALSE}
 library(rstan)
 library(tidyverse)
 ```
@@ -119,6 +125,7 @@ This model is likely not a very good fit for this data. There are low case numbe
 - time-varying beta and importations.
 - importations, sub-critical R, and a stochastic model. 
 - assuming a high level of underreporting combined with importations.
+- generate synthetic data we understand and that meets our expectations about priors etc. and fit to this data.
 - lots of other things to explore.
 
 At this point I decided to have a BBQ instead (see below and note the natty hat). See resources for more information about stan and compartmental models. If interested in more of my cutting insights I'm available for collaboration.

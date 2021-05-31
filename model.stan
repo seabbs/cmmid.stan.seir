@@ -1,3 +1,5 @@
+// From: https://mc-stan.org/users/documentation/case-studies/boarding_school_case_study.html
+// with minor adaptions
 functions {
   real[] seir(real t, real[] y, real[] theta, 
              real[] x_r, int[] x_i) {

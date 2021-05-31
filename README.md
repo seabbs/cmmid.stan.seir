@@ -1,11 +1,11 @@
 
-# An example SEIR compartmental model implemented in stan
+# Stan in the CMMID
 
 > [There are many like it, but this one is
 > mine](https://en.wikipedia.org/wiki/Rifleman%27s_Creed)
 
-An example SEIR model implemented in stan for the CMMID computational
-and inference theme meeting.
+A short summary on the what, why, why not, and how of stan + an example
+SEIR model for the CMMID computational and inference theme meeting.
 
 ## What
 
@@ -70,6 +70,13 @@ See [here](https://mc-stan.org) for more.
 
   - Load some packages
 
+<!-- end list -->
+
+``` r
+library(rstan)
+library(tidyverse)
+```
+
   - Load the SEIR model (heavily based on [Bayesian workflow for disease
     transmission modelling in
     stan](https://mc-stan.org/users/documentation/case-studies/boarding_school_case_study.html)).
@@ -78,11 +85,10 @@ See [here](https://mc-stan.org) for more.
 
 ``` r
 model <- stan_model("model.stan")
-#> Warning in readLines(file, warn =
-#> TRUE): incomplete final line found on
-#> '/home/rstudio/stan.seir/model.stan'
 model
 #> S4 class stanmodel 'model' coded as follows:
+#> // From: https://mc-stan.org/users/documentation/case-studies/boarding_school_case_study.html
+#> // with minor adaptions
 #> functions {
 #>   real[] seir(real t, real[] y, real[] theta, 
 #>              real[] x_r, int[] x_i) {
@@ -190,7 +196,7 @@ head(dt)
 plot(dt$onsets)
 ```
 
-<img src="figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="figures/README-unnamed-chunk-6-1.png" width="100%" />
 
   - Define as parameters for the stan model
 
@@ -231,6 +237,8 @@ to deal with this:
   - time-varying beta and importations.
   - importations, sub-critical R, and a stochastic model.
   - assuming a high level of underreporting combined with importations.
+  - generate synthetic data we understand and that meets our
+    expectations about priors etc. and fit to this data.
   - lots of other things to explore.
 
 At this point I decided to have a BBQ instead (see below and note the
