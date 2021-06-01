@@ -115,7 +115,7 @@ data$ts <- seq(1, data$n_days, by = 1)
 options(mc.cores = 4)
 fit_nuts <- sampling(model,
                      data = data,
-                     chains = 1,
+                     chains = 4,
                      seed = 0)
 ```
 
